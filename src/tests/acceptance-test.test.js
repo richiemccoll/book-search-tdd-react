@@ -1,5 +1,6 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
+
 import App from '../App';
 
 describe("Book Finder Application", () => {
@@ -7,6 +8,8 @@ describe("Book Finder Application", () => {
     const { getByLabelText } = render(<App />);
     const input = getByLabelText(/Search for a book/i);
     expect(input).toBeInTheDocument();
+    fireEvent.change(input, { target: { value: 'testing a search query' }});
+    expect(input.value).toEqual('testing a search query');
   });
   it("User can submit the search query", () => {});
   it("User can see the list of books appearing on the page", () => {});
