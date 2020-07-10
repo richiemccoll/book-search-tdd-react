@@ -49,6 +49,7 @@ function App() {
               <span key={author}>{author}</span>
             ))}
             <span>{result.volumeInfo.publishedDate}</span>
+            <a href={result.volumeInfo.infoLink}>Find out more</a>
           </article>
         ))}
       </section>

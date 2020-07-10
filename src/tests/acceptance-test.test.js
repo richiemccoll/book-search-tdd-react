@@ -68,6 +68,20 @@ describe("Book Finder Application", () => {
     // Check for Picture
     getByAltText('The Ultimate Harry Potter and Philosophy');
   });
-  it("For each item in the list add a link that will send the User to an external site which has more information about the book", () => {});
+
+  it("For each item in the list add a link that will send the User to an external site which has more information about the book", async () => {
+    booksServiceMock.mockImplementation(() => Promise.resolve(mock));
+    const { getByLabelText, getByText } = render(<App />);
+    const input = getByLabelText(/Search for a book/i);
+    expect(input).toBeInTheDocument();
+    fireEvent.change(input, { target: { value: 'Harry Potter' }});
+    expect(input.value).toEqual('Harry Potter');
+
+    await act(async () => fireEvent.submit(input));
+    expect(booksServiceMock).toHaveBeenCalled();
+    const link = getByText('Find out more');
+    expect(link.href).toEqual(mock.items[0].volumeInfo.infoLink)
+  });
+  
   it("Supports loading animations", () => {});
 });
