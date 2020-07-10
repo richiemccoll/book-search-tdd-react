@@ -66,7 +66,8 @@ describe("Book Finder Application", () => {
     // Check for Published Date
     getAllByText('2010-08-13');
     // Check for Picture
-    getByAltText('The Ultimate Harry Potter and Philosophy');
+    const image = getByAltText('The Ultimate Harry Potter and Philosophy');
+    expect(image.src).toEqual(mock.items[0].volumeInfo.imageLinks.thumbnail);
   });
 
   it("For each item in the list add a link that will send the User to an external site which has more information about the book", async () => {

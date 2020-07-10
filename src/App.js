@@ -43,7 +43,7 @@ function App() {
       <section data-test-id="results">
         {results.map((result) => (
           <article key={result.id}>
-            <img alt={result.volumeInfo.title} />
+            <img alt={result.volumeInfo.title} src={result.volumeInfo.imageLinks.thumbnail} />
             <h1>{result.volumeInfo.title}</h1>
             {result.volumeInfo.authors.map(author => (
               <span key={author}>{author}</span>
