@@ -1,7 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
+import { atom, useRecoilState, RecoilRoot } from "recoil";
+
+const searchInputState = atom({
+  key: "searchInputState",
+  value: "",
+});
 
 function SearchInput() {
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useRecoilState(searchInputState);
+  
+  function onChange(e) {
+    setSearchInput(e.target.value);
+  }
+
   return (
     <form>
       <label htmlFor="book-search">Search for a book</label>
@@ -9,7 +20,7 @@ function SearchInput() {
         id="book-search"
         type="text"
         value={searchInput}
-        onChange={(e) => setSearchInput(e.target.value)}
+        onChange={onChange}
       />
     </form>
   );
@@ -17,13 +28,15 @@ function SearchInput() {
 
 function App() {
   return (
-    <main>
-      <section data-test-id="search">
-        <SearchInput />
-      </section>
+    <RecoilRoot>
+      <main>
+        <section data-test-id="search">
+          <SearchInput />
+        </section>
 
-      <section data-test-id="results"></section>
-    </main>
+        <section data-test-id="results"></section>
+      </main>
+    </RecoilRoot>
   );
 }
 
