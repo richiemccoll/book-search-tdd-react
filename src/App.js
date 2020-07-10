@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 
-function App() {
+function SearchInput() {
   const [searchInput, setSearchInput] = useState("");
+  return (
+    <form>
+      <label htmlFor="book-search">Search for a book</label>
+      <input
+        id="book-search"
+        type="text"
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
+      />
+    </form>
+  );
+}
+
+function App() {
   return (
     <main>
       <section data-test-id="search">
-        <form>
-          <label htmlFor="book-search">Search for a book</label>
-          <input
-            id="book-search"
-            type="text"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-          />
-        </form>
+        <SearchInput />
       </section>
 
       <section data-test-id="results"></section>
