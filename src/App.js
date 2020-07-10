@@ -1,5 +1,6 @@
 import React from "react";
 import { atom, useRecoilState, RecoilRoot } from "recoil";
+import services from "./services";
 
 const searchInputState = atom({
   key: "searchInputState",
@@ -13,8 +14,12 @@ function SearchInput() {
     setSearchInput(e.target.value);
   }
 
+  function handleSubmit() {
+    return services.callBooksService(searchInput);
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <label htmlFor="book-search">Search for a book</label>
       <input
         id="book-search"
