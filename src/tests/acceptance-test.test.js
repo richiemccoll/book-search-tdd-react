@@ -2,7 +2,9 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 
 import services from '../services';
+import mock from '../mocks/book-volumes.mock.json';
 import App from '../App';
+import { act } from 'react-dom/test-utils';
 
 describe("Book Finder Application", () => {
   let booksServiceMock;
@@ -32,6 +34,7 @@ describe("Book Finder Application", () => {
 
     fireEvent.submit(input);
     expect(booksServiceMock).toHaveBeenCalled();
+    expect(booksServiceMock).toHaveBeenCalledWith('Harry Potter');
   });
 
   it("User cannot submit an empty search query", () => {
@@ -44,7 +47,27 @@ describe("Book Finder Application", () => {
     expect(booksServiceMock).not.toHaveBeenCalled();
   });
 
-  it("User can see the list of books appearing on the page", () => {});
+  it("User can see the list of books appearing on the page", async () => {
+    booksServiceMock.mockImplementation(() => Promise.resolve(mock));
+    const { getByLabelText, getByAltText, getAllByText } = render(<App />);
+    const input = getByLabelText(/Search for a book/i);
+    expect(input).toBeInTheDocument();
+    fireEvent.change(input, { target: { value: 'Harry Potter' }});
+    expect(input.value).toEqual('Harry Potter');
+
+    await act(async () => fireEvent.submit(input));
+    expect(booksServiceMock).toHaveBeenCalled();
+
+    // Check for Title
+    getAllByText('The Ultimate Harry Potter and Philosophy');
+    // Check for Author  
+    getAllByText("William Irwin");
+    getAllByText("Gregory Bassham");
+    // Check for Published Date
+    getAllByText('2010-08-13');
+    // Check for Picture
+    getByAltText('The Ultimate Harry Potter and Philosophy');
+  });
   it("For each item in the list add a link that will send the User to an external site which has more information about the book", () => {});
   it("Supports loading animations", () => {});
 });

@@ -1,22 +1,16 @@
-import React from "react";
-import { atom, useRecoilState, RecoilRoot } from "recoil";
+import React, { useState } from "react";
 import services from "./services";
 
-const searchInputState = atom({
-  key: "searchInputState",
-  value: "",
-});
-
-function SearchInput() {
-  const [searchInput, setSearchInput] = useRecoilState(searchInputState);
-  
+function SearchInput({ onSubmit }) {
+  const [searchInput, setSearchInput] = useState("");
   function onChange(e) {
     setSearchInput(e.target.value);
   }
+  function handleSubmit(e) {
+    e.preventDefault();
 
-  function handleSubmit() {
     if (searchInput) {
-      return services.callBooksService(searchInput);
+      onSubmit(searchInput);
     }
   }
 
@@ -34,16 +28,31 @@ function SearchInput() {
 }
 
 function App() {
+  const [results, setResults] = useState([]);
+  function handleSubmit(query) {
+    return services
+      .callBooksService(query)
+      .then((data) => setResults(data.items));
+  }
   return (
-    <RecoilRoot>
-      <main>
-        <section data-test-id="search">
-          <SearchInput />
-        </section>
+    <main>
+      <section data-test-id="search">
+        <SearchInput onSubmit={handleSubmit} />
+      </section>
 
-        <section data-test-id="results"></section>
-      </main>
-    </RecoilRoot>
+      <section data-test-id="results">
+        {results.map((result) => (
+          <article key={result.id}>
+            <img alt={result.volumeInfo.title} />
+            <h1>{result.volumeInfo.title}</h1>
+            {result.volumeInfo.authors.map(author => (
+              <span key={author}>{author}</span>
+            ))}
+            <span>{result.volumeInfo.publishedDate}</span>
+          </article>
+        ))}
+      </section>
+    </main>
   );
 }
 
