@@ -15,7 +15,9 @@ function SearchInput() {
   }
 
   function handleSubmit() {
-    return services.callBooksService(searchInput);
+    if (searchInput) {
+      return services.callBooksService(searchInput);
+    }
   }
 
   return (
