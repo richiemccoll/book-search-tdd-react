@@ -50,7 +50,10 @@ function App() {
   return (
     <main className="container px-5 py-24 mx-auto">
       <section data-test-id="search">
-        <SearchInput onSubmit={handleSubmit} />
+        <SearchInput onSubmit={(query) => {
+          dispatch({ type: LOADING_STATE });
+          handleSubmit(query);
+        }} />
       </section>
 
       <section
@@ -63,6 +66,7 @@ function App() {
         {state.message === EMPTY_STATE ? (
           <p>No results found. Please try again!</p>
         ) : null}
+        {state.message === LOADING_STATE ? <p>Loading results!</p> : null}
       </section>
     </main>
   );
