@@ -62,9 +62,8 @@ describe("Book Finder Application", () => {
     getAllByText("The Ultimate Harry Potter and Philosophy");
     // Check for Author
     getAllByText("William Irwin");
-    getAllByText("Gregory Bassham");
     // Check for Published Date
-    getAllByText("2010-08-13");
+    getAllByText("Published Date - 2010-08-13");
     // Check for Picture
     const image = getByAltText("The Ultimate Harry Potter and Philosophy");
     expect(image.src).toEqual(mock.items[0].volumeInfo.imageLinks.thumbnail);
@@ -98,6 +97,4 @@ describe("Book Finder Application", () => {
     expect(booksServiceMock).toHaveBeenCalled();
     getByText("No results found. Please try again!");
   });
-
-  it("Supports loading animations", () => {});
 });
